@@ -85,6 +85,14 @@ run_installer(){
   bash /tmp/get_replicated.sh local-address="$PRIVATE_IP" no-proxy no-docker
 }
 
+write_on_host_config(){
+cat <<EOT > /etc/circle-installation-customizations
+SHARED_CUSTOMER_DOCKER_SOCKET=/tmp/user-docker.sock
+CIRCLE_MACHINE_DOCKER_IMAGE=circleci/buildpack-deps:latest-dind
+export CIRCLE_BUILD_AGENT=circleci/picard:0.1.1202-9ba51e95
+EOT
+}
+
 run_installer
 write_config
-
+write_on_host_config
